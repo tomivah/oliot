@@ -46,6 +46,11 @@ public class DayReport {
 		this.reputationChange += amount;
 	}
 
+	public void update(HourReport hourReport) {
+		// Get stuff from hour report and add to day report
+	}
+
+
 	@Override
 	public String toString() {
 		return "---- Day Report ---- " + "\n"

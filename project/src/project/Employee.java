@@ -8,7 +8,7 @@ public class Employee {
 	private static Random rand = new Random();
 
 	public Employee() {
-		// Tehokkuus olisi jotain yhden ja kahden välillä?
+		// Performace in between 1 and 2 ??? 
 		this.performance = 1 + rand.nextDouble();
 	}
 

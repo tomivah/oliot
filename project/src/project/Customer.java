@@ -11,8 +11,9 @@ public class Customer {
 
 	public Customer() {
 		this.patience = random.nextInt(11) + 5;
-		this.name = "Hitler Hamburger"; // Nimet ja huudot vois tässä kohti
-		this.shout = "Heil Hamburger!"; // lukea muualta? 
+	 	// Read names and shouts from files or something?
+		this.name = "Hitler Hamburger";
+		this.shout = "Heil Hamburger!"; 
 	}
 
 	public int getPatience() {
