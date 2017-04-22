@@ -13,7 +13,6 @@ public class Project {
                 default:
                     TextInterface.printLine( "Invalid selection" );
             }
-			System.out.println("Juupajuu");
         }
     }
 }
