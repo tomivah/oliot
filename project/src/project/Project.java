@@ -6,6 +6,7 @@ public class Project {
 		Menu menu = new Menu();
 		// Store gets a couple of employees in the constructor
 		Store store = new Store(100,10000);
+		// NextDay() could be store's own method?
 		nextDay(store);
 
 		while (true) {
