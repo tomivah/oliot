@@ -5,11 +5,16 @@ public class Order {
 	private Customer customer;
 	private Employee employee;
 	private Meal meal;
+	private int workRemaining;
 
 	public Order(Customer customer, Employee employee, Meal meal) {
 		this.customer = customer;
 		this.employee = employee;
 		this.meal = meal;
+
+		// Round down the work amount
+		double work = meal.getWorkAmount() * employee.getPerformance();
+		this.workRemaining = (int) work;
 	}
 
 	public Customer getCustomer() {
