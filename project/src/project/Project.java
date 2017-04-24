@@ -32,7 +32,8 @@ public class Project {
 		for (int h = 1; h <= 12; h++) {
 			nextHour(store, dReport, h);
 		}
-
+		
+		store.clearStore();
 		TextInterface.printLine(dReport.toString());
 	}
 
@@ -99,7 +100,7 @@ public class Project {
 
 	public static boolean newCustomer(Store store) {
 		// Do the probability magic here
-		return Math.random() < 0.1;
+		return Math.random() < 0.9;
 
 	}
 }
