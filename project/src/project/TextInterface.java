@@ -9,10 +9,26 @@ public class TextInterface {
         System.out.println( string );
     }
 
+    public static void printLine( int value ) {
+        System.out.println( value );
+    }
+
+    public static void printLine( double value ) {
+        System.out.println( value );
+    }
+    
     public static void print( String string ) {
         System.out.print( string );
     }
 
+    public static void print( int value ) {
+        System.out.print( value );
+    }
+
+    public static void print( double value ) {
+        System.out.print( value );
+    }
+    
     public static String read( String message ) {
         print( message );
         return scanner.next();
