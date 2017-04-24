@@ -4,17 +4,16 @@ import java.util.ArrayList;
 
 public class Project {
 
-	
 	public static void main(String[] args) {
 		Menu menu = new Menu();
 		// Store gets a couple of employees in the constructor
 		Store store = new Store(100, 10000);
 		// NextDay() could be store's own method?
 		nextDay(store);
-		
+
 		while (true) {
 			menu.show();
-			
+
 			switch (menu.readSelection()) {
 				case 1:
 					System.exit(0);
@@ -26,27 +25,28 @@ public class Project {
 			}
 		}
 	}
-	
+
 	public static void nextDay(Store store) {
 		DayReport dReport = new DayReport();
-		
+
 		for (int h = 1; h <= 12; h++) {
 			nextHour(store, dReport, h);
 		}
-		
+
 		TextInterface.printLine(dReport.toString());
 	}
-	
+
 	public static void nextHour(Store store, DayReport dReport, int hour) {
 		HourReport hReport = new HourReport();
-		
+
 		for (int m = 1; m <= 60; m++) {
 			nextMinute(store, hReport, hour);
 		}
 		
+		hReport.calculateAverages();
 		TextInterface.printLine(hReport.toString());
 	}
-	
+
 	public static void nextMinute(Store store, HourReport hReport, int hour) {
 		// Create customer according to probability 
 		if (newCustomer(store)) {
@@ -65,41 +65,41 @@ public class Project {
 			store.putCustomerToWaitingList(cus);
 
 			// Where should meals be created? 
-			Meal meal = new Meal("Happy meal", 7.5, 10);			
+			Meal meal = new Meal("Happy meal", 7.5, 10);
 			store.addOrder(new Order(cus, emp, meal));
 			hReport.addMoney(meal.getPrice());
-
-		// if customer in line and no free employees: go trough 
-		// all customers and add waiting minutes
-		} else if (store.customersInLine() && !store.employeeAvailable()) {
-			for (Customer customer : store.getCustomers()) {
-				customer.decreasePatience();
-				hReport.addWaitingMinutes(1);
-			}
 		}
+
+		// Every minute all customers wait one minute
+		store.allCustomersWait();
 
 		// Go trough orders. 
 		// The new list is for the orders that are ready and need to be removed
-		ArrayList<Order> readyOrders = new ArrayList(); 
+		ArrayList<Order> readyOrders = new ArrayList();
 		for (Order order : store.getOrders()) {
 			order.work();
 			if (order.getWorkRemaining() <= 0) {
+				Customer customer = order.getCustomer();
 				store.setEmployeeFree(order.getEmployee());
-				// These method names are getting out of hands!
-				store.removeCustomerFromWaitingList(order.getCustomer());
+				store.removeCustomerFromWaitingList(customer);
 				readyOrders.add(order);
+				
+				// get info for hour report 
+				hReport.addWaitingMinutes(customer.getMinutesWaiting());
+				hReport.addInLineMinutes(customer.getMinutesInLine());
 			}
 		}
 
 		// Calculate reputation change and remove orders that are ready
 		for (Order order : readyOrders) {
+			// store.addToReputation( order.calculateReputation() ); 
 			store.removeOrder(order);
 		}
 	}
-	
+
 	public static boolean newCustomer(Store store) {
 		// Do the probability magic here
-		return Math.random() < 0.5;
+		return Math.random() < 0.1;
 
 	}
 }
