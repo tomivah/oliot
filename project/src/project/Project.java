@@ -32,7 +32,7 @@ public class Project {
 		for (int h = 1; h <= 12; h++) {
 			nextHour(store, dReport, h);
 		}
-		
+
 		store.clearStore();
 		TextInterface.printLine(dReport.toString());
 	}
@@ -43,14 +43,14 @@ public class Project {
 		for (int m = 1; m <= 60; m++) {
 			nextMinute(store, hReport, hour);
 		}
-		
+
 		hReport.calculateAverages();
 		TextInterface.printLine(hReport.toString());
 	}
 
 	public static void nextMinute(Store store, HourReport hReport, int hour) {
 		// Create customer according to probability 
-		if (newCustomer(store)) {
+		if (newCustomer()) {
 			Customer customer = new Customer();
 			store.addCustomerToLine(customer);
 			hReport.customerVisited();
@@ -66,7 +66,7 @@ public class Project {
 			store.putCustomerToWaitingList(cus);
 
 			// Where should meals be created? 
-			Meal meal = new Meal("Happy meal", 7.5, 10);
+			Meal meal = new Meal("Happy meal", 7.5, 5);
 			store.addOrder(new Order(cus, emp, meal));
 			hReport.addMoney(meal.getPrice());
 		}
@@ -80,11 +80,12 @@ public class Project {
 		for (Order order : store.getOrders()) {
 			order.work();
 			if (order.getWorkRemaining() <= 0) {
-				Customer customer = order.getCustomer();
-				store.setEmployeeFree(order.getEmployee());
-				store.removeCustomerFromWaitingList(customer);
 				readyOrders.add(order);
-				
+				store.setEmployeeFree(order.getEmployee());
+
+				Customer customer = order.getCustomer();
+				store.removeCustomerFromWaitingList(customer);
+
 				// get info for hour report 
 				hReport.addWaitingMinutes(customer.getMinutesWaiting());
 				hReport.addInLineMinutes(customer.getMinutesInLine());
@@ -98,9 +99,9 @@ public class Project {
 		}
 	}
 
-	public static boolean newCustomer(Store store) {
+	public static boolean newCustomer() {
 		// Do the probability magic here
-		return Math.random() < 0.9;
+		return Math.random() < 0.1;
 
 	}
 }
