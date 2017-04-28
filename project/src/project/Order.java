@@ -29,6 +29,11 @@ public class Order {
 		return this.meal;
 	}
 
+	public int getWorkRemaining() {
+		return this.workRemaining;
+	}
+	
+
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
@@ -39,6 +44,10 @@ public class Order {
 
 	public void setMeal(Meal meal) {
 		this.meal = meal;
+	}
+
+	public void work () {
+		this.workRemaining--;
 	}
 
 	

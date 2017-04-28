@@ -7,13 +7,25 @@ public class Customer {
 	private int patience;
 	private String name;
 	private String shout;
+	private int minutesInLine;
+	private int minutesWaiting;
 	private static Random random = new Random();
 
 	public Customer() {
 		this.patience = random.nextInt(11) + 5;
-	 	// Read names and shouts from files or something?
+		this.minutesInLine = 0;
+		this.minutesWaiting = 0;
+		// Read names and shouts from files or something?
 		this.name = "Hitler Hamburger";
-		this.shout = "Heil Hamburger!"; 
+		this.shout = "Heil Hamburger!";
+	}
+
+	public int getMinutesInLine() {
+		return minutesInLine;
+	}
+
+	public int getMinutesWaiting() {
+		return minutesWaiting;
 	}
 
 	public int getPatience() {
@@ -34,6 +46,18 @@ public class Customer {
 
 	public void setShout(String shout) {
 		this.shout = shout;
+	}
+
+	public void decreasePatience() {
+		this.patience--;
+	}
+
+	public void addWaitingMinute() {
+		this.minutesWaiting++;
+	}
+
+	public void addLineMinute() {
+		this.minutesInLine++;
 	}
 
 }
