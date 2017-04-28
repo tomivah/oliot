@@ -55,11 +55,15 @@ public class DayReport {
 
 	@Override
 	public String toString() {
-		return "---- Day Report ---- " + "\n"
+		String sign = ""; // positive sign
+		if (this.reputationChange > 0) {
+			sign = "+";
+		}
+		return "\n---- Day Report ---- " + "\n"
 				+ "Customers visited: " + this.customersVisited + "\n"
 				+ "Money made: " + this.moneyMade + "\n"
 				+ "Minutes waited: " + this.waitingMinutes + "\n"
-				+ "Reputation change: " + this.reputationChange + "\n";
+				+ "Reputation change: " + sign + this.reputationChange + "\n";
 
 	}
 }

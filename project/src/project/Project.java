@@ -6,9 +6,7 @@ public class Project {
 
 	public static void main(String[] args) {
 		Menu menu = new Menu();
-		// Store gets a couple of employees in the constructor
-		Store store = new Store(100, 10000);
-		// NextDay() could be store's own method?
+		Store store = new Store(100, 10000, 7, 19);
 		nextDay(store);
 
 		while (true) {
@@ -20,6 +18,9 @@ public class Project {
 				case 2:
 					nextDay(store);
 					break;
+				case 3:
+					TextInterface.printLine(store.toString());
+					break;
 				default:
 					TextInterface.printLine("Invalid selection");
 			}
@@ -28,8 +29,10 @@ public class Project {
 
 	public static void nextDay(Store store) {
 		DayReport dReport = new DayReport();
+		int openingHour = store.getOpeningHour();
+		int closingHour = store.getClosingHour();
 
-		for (int h = 1; h <= 12; h++) {
+		for (int h = openingHour; h < closingHour; h++) {
 			nextHour(store, dReport, h);
 		}
 
@@ -38,15 +41,17 @@ public class Project {
 	}
 
 	public static void nextHour(Store store, DayReport dReport, int hour) {
-		HourReport hReport = new HourReport();
+		HourReport hReport = new HourReport(hour);
 
 		for (int m = 1; m <= 60; m++) {
 			nextMinute(store, hReport, hour);
 		}
 
-		hReport.calculateAverages();
 		dReport.update(hReport);
+		hReport.calculateAverages();
 		TextInterface.printLine(hReport.toString());
+		store.payWages();
+		TextInterface.readLine("[Press enter for next hour]");
 	}
 
 	public static void nextMinute(Store store, HourReport hReport, int hour) {
@@ -69,6 +74,7 @@ public class Project {
 			// Where should meals be created? 
 			Meal meal = new Meal("Happy meal", 7.5, 5);
 			store.addOrder(new Order(cus, emp, meal));
+			store.addMoney(meal.getPrice());
 			hReport.addMoney(meal.getPrice());
 		}
 
@@ -93,6 +99,7 @@ public class Project {
 			}
 		}
 
+		// Go through orders that are ready
 		// Calculate reputation change and remove orders that are ready
 		for (Order order : readyOrders) {
 			int repChange = order.getCustomer().getSatisfaction();
@@ -104,7 +111,7 @@ public class Project {
 
 	public static boolean newCustomer() {
 		// Do the probability magic here
-		return Math.random() < 0.6;
+		return Math.random() < 0.1;
 
 	}
 }

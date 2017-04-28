@@ -23,7 +23,8 @@ public class Menu {
         TextInterface.printLine( "The day has ended. " +
                 "What would you like to do?" );
         TextInterface.printLine( "1) Exit" );
-		TextInterface.printLine( "2) Next day");
+		TextInterface.printLine( "2) Next day" );
+		TextInterface.printLine( "3) Show Store" );
     }
     
     private void showGraphical() {

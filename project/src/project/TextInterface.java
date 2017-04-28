@@ -1,5 +1,6 @@
 package project;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class TextInterface {
@@ -30,8 +31,10 @@ public class TextInterface {
     }
     
     public static String read( String message ) {
-        print( message );
-        return scanner.next();
+		print(message);
+        String s = scanner.next();
+		scanner.nextLine();
+        return s;
     }
 
     public static String readLine( String message ) {
@@ -41,16 +44,22 @@ public class TextInterface {
 
     public static int readInt( String message ) {
         print( message );
-        return scanner.nextInt();
+        int i = scanner.nextInt();
+		scanner.nextLine();
+        return i;
     }
 
     public static float readFloat( String message ) {
         print( message );
-        return scanner.nextFloat();
+        float f = scanner.nextFloat();
+		scanner.nextLine();
+        return f;
     }
 
     public static double readDouble( String message ) {
         print( message );
-        return scanner.nextDouble();
+        double d = scanner.nextDouble();
+		scanner.nextLine();
+        return d;
     }
 }

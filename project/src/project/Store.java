@@ -6,22 +6,19 @@ public class Store {
 
 	private double reputation;
 	private double money;
-	private ArrayList<Employee> employees;
-	private ArrayList<Customer> customerLine;
-	private ArrayList<Order> orders;
-	private ArrayList<Employee> freeEmployees;
-	private ArrayList<Customer> waitingCustomers;
+	private int openingHour;
+	private int closingHour;
+	private ArrayList<Employee> employees = new ArrayList();
+	private ArrayList<Customer> customerLine = new ArrayList();
+	private ArrayList<Order> orders = new ArrayList();
+	private ArrayList<Employee> freeEmployees = new ArrayList();
+	private ArrayList<Customer> waitingCustomers = new ArrayList();
 
-	public Store(double reputation, double money) {
+	public Store(double reputation, double money, int openHour,  int closeHour) {
+		this.openingHour = openHour;
+		this.closingHour = closeHour;
 		this.reputation = reputation;
 		this.money = money;
-		this.employees = new ArrayList();
-		this.customerLine = new ArrayList();
-		this.orders = new ArrayList();
-		this.freeEmployees = new ArrayList();
-		// These are the customer that have ordered and are now waiting 
-		this.waitingCustomers = new ArrayList(); 
-
 		// Create a couple of employees right away?
 		createStartingEmployees();
 	}
@@ -50,6 +47,11 @@ public class Store {
 		this.reputation += amount;
 	}
 
+	public void addMoney(double amount) {
+		this.money += amount;
+	}
+
+
 	public void addEmployee(Employee emp) {
 		this.employees.add(emp);
 	}
@@ -64,6 +66,14 @@ public class Store {
 
 	public double getReputation() {
 		return this.reputation;
+	}
+
+	public int getOpeningHour() {
+		return openingHour;
+	}
+
+	public int getClosingHour() {
+		return closingHour;
 	}
 
 	public boolean employeeAvailable() {
@@ -139,5 +149,28 @@ public class Store {
 				this.freeEmployees.add(emp);
 			}
 		}
+	}
+
+	@Override
+	public String toString() {
+		return "\n---- Store ---- \n"
+				+ "Reputation: " + this.reputation +"\n"
+				+ "Money: " + this.money +"\n"
+				+ "Employees: " + this.employees.size() +"\n"
+				+ "Daily Wages: " + this.getDailyWages() + "\n";
+	}
+
+	public void payWages() {
+		for (Employee emp : this.employees) {
+			this.money -= emp.getWage();
+		}
+	}
+
+	public double getDailyWages() {
+		double total = 0.0;
+		for (Employee emp : this.employees) {
+			total += emp.getWage();
+		}
+		return total * this.closingHour - this.openingHour;
 	}
 }

@@ -9,8 +9,10 @@ public class HourReport {
 	private double averageWaiting;
 	private double averageInLine;
 	private int reputationChange;
+	private int hour;
 
-	public HourReport() {
+	public HourReport(int hour) {
+		this.hour = hour;
 	}
 
 	public double getMoneyMade() {
@@ -60,7 +62,7 @@ public class HourReport {
 
 	@Override
 	public String toString() {
-		return "----- Hour Report -----" + "\n"
+		return "\n----- Hour Report [" + this.hour + "] -----" + "\n"
 				+ "Customers visited: " + this.customersVisited + "\n"
 				+ "Money made: " + this.moneyMade + "\n"
 				+ "Average minutes waited: " + this.averageWaiting + "\n"
