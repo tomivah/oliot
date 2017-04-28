@@ -8,14 +8,9 @@ public class HourReport {
 	private int totalInLine;
 	private double averageWaiting;
 	private double averageInLine;
+	private int reputationChange;
 
 	public HourReport() {
-		this.moneyMade = 0;
-		this.customersVisited = 0;
-		this.averageWaiting = 0;
-		this.averageInLine = 0;
-		this.totalInLine = 0;
-		this.totalWaiting = 0;
 	}
 
 	public double getMoneyMade() {
@@ -32,6 +27,10 @@ public class HourReport {
 
 	public int getInLineMinutes() {
 		return this.totalInLine;
+	}
+
+	public int getReputationChange() {
+		return this.reputationChange;
 	}
 
 	public void addMoney(double amount) {
@@ -53,6 +52,10 @@ public class HourReport {
 	public void calculateAverages() {
 		this.averageInLine = this.totalInLine / this.customersVisited;
 		this.averageWaiting = this.totalWaiting / this.customersVisited;
+	}
+
+	public void addReputationChange(int amount) {
+		this.reputationChange += amount;
 	}
 
 	@Override

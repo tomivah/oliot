@@ -5,7 +5,7 @@ public class DayReport {
 	private double moneyMade;
 	private int customersVisited;
 	private int waitingMinutes;
-	private double reputationChange;
+	private int reputationChange;
 
 	public DayReport() {
 		this.moneyMade = 0;
@@ -48,8 +48,10 @@ public class DayReport {
 
 	public void update(HourReport hourReport) {
 		// Get stuff from hour report and add to day report
+		this.moneyMade += hourReport.getMoneyMade();
+		this.customersVisited += hourReport.getCustomersVisited();
+		this.reputationChange += hourReport.getReputationChange();
 	}
-
 
 	@Override
 	public String toString() {

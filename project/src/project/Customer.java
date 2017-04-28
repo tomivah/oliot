@@ -48,16 +48,16 @@ public class Customer {
 		this.shout = shout;
 	}
 
-	public void decreasePatience() {
-		this.patience--;
-	}
-
 	public void addWaitingMinute() {
 		this.minutesWaiting++;
 	}
 
 	public void addLineMinute() {
 		this.minutesInLine++;
+	}
+
+	public int getSatisfaction() {
+		return this.patience - this.minutesInLine;
 	}
 
 }

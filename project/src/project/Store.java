@@ -44,7 +44,6 @@ public class Store {
 		this.freeEmployees.add(emp3);
 		this.freeEmployees.add(emp4);
 		this.freeEmployees.add(emp5);
-
 	}
 
 	public void addToReputation(double amount) {
@@ -121,14 +120,11 @@ public class Store {
 	}
 
 	public void allCustomersWait() {
-		// How should the minutes affect patience?
 		for (Customer customer : this.customerLine) {
-			customer.decreasePatience();
 			customer.addLineMinute();
 		}
 
 		for (Customer customer : this.waitingCustomers) {
-			customer.decreasePatience();
 			customer.addWaitingMinute();
 		}
 	}

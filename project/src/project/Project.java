@@ -45,6 +45,7 @@ public class Project {
 		}
 
 		hReport.calculateAverages();
+		dReport.update(hReport);
 		TextInterface.printLine(hReport.toString());
 	}
 
@@ -94,14 +95,16 @@ public class Project {
 
 		// Calculate reputation change and remove orders that are ready
 		for (Order order : readyOrders) {
-			// store.addToReputation( order.calculateReputation() ); 
+			int repChange = order.getCustomer().getSatisfaction();
+			store.addToReputation(repChange);
+			hReport.addReputationChange(repChange);
 			store.removeOrder(order);
 		}
 	}
 
 	public static boolean newCustomer() {
 		// Do the probability magic here
-		return Math.random() < 0.1;
+		return Math.random() < 0.6;
 
 	}
 }
