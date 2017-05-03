@@ -25,19 +25,11 @@ public class Store {
 		this.startingEmployeeAmount = startingEmployees;
 
 		// Create a couple of employees right away?
-		for (int i = this.startingEmployeeAmount; i >= 1; i--) {
+		for (int i = this.startingEmployeeAmount; i > 0; i--) {
 			Employee emp = new Employee();
 			this.employees.add(emp);
 			this.freeEmployees.add(emp);
 		}
-	}
-
-	public void addToReputation(double amount) {
-		this.reputation += amount;
-	}
-
-	public void addMoney(double amount) {
-		this.money += amount;
 	}
 
 	public void addEmployee(Employee emp) {
@@ -46,10 +38,6 @@ public class Store {
 
 	public void removeEmployee(Employee emp) {
 		this.employees.remove(emp);
-	}
-
-	public void addCustomerToLine(Customer customer) {
-		this.customerLine.add(customer);
 	}
 
 	public double getReputation() {
@@ -64,79 +52,12 @@ public class Store {
 		return closingHour;
 	}
 
-	public boolean employeeAvailable() {
-		return this.freeEmployees.size() > 0;
-	}
-
-	public Employee getFreeEmployee() {
-		return this.freeEmployees.get(0);
-	}
-
-	public boolean customersInLine() {
-		return this.customerLine.size() > 0;
-	}
-
-	public Customer getFirstCustomer() {
-		return this.customerLine.get(0);
-	}
-
-	public void removeCustomerFromLine(Customer customer) {
-		this.customerLine.remove(customer);
-	}
-
-	public void putCustomerToWaitingList(Customer customer) {
-		this.waitingCustomers.add(customer);
-	}
-
-	public void addOrder(Order order) {
-		this.orders.add(order);
-	}
-
-	public Iterable<Order> getOrders() {
-		return this.orders;
-	}
-
-	public void setEmployeeFree(Employee emp) {
-		this.freeEmployees.add(emp);
-	}
-
-	public void setEmployeeNotFree(Employee emp) {
-		this.freeEmployees.remove(emp);
-	}
-
-	public void removeCustomerFromWaitingList(Customer customer) {
-		this.waitingCustomers.remove(customer);
-	}
-
-	public Iterable<Customer> getCustomers() {
-		// This is unused and redundant
-		return this.customerLine;
-	}
-
-	public void removeOrder(Order order) {
-		this.orders.remove(order);
-	}
-
-	public void allCustomersWait() {
-		for (Customer customer : this.customerLine) {
-			customer.addLineMinute();
-		}
-
-		for (Customer customer : this.waitingCustomers) {
-			customer.addWaitingMinute();
-		}
-	}
-
-	public void clearStore() {
-		// Throw out all customers, all orders and free all employees
-		this.customerLine.clear();
-		this.waitingCustomers.clear();
-		this.orders.clear();
+	public double getDailyWages() {
+		double total = 0.0;
 		for (Employee emp : this.employees) {
-			if (!this.freeEmployees.contains(emp)) {
-				this.freeEmployees.add(emp);
-			}
+			total += emp.getWage();
 		}
+		return total * this.closingHour - this.openingHour;
 	}
 
 	@Override
@@ -148,17 +69,117 @@ public class Store {
 				+ "Daily Wages: " + this.getDailyWages() + "\n";
 	}
 
-	public void payWages() {
+	private void allCustomersWait() {
+		for (Customer customer : this.customerLine) {
+			customer.addLineMinute();
+		}
+
+		for (Customer customer : this.waitingCustomers) {
+			customer.addWaitingMinute();
+		}
+	}
+
+	private void clearStore() {
+		// Throw out all customers, all orders and free all employees
+		this.customerLine.clear();
+		this.waitingCustomers.clear();
+		this.orders.clear();
+		for (Employee emp : this.employees) {
+			if (!this.freeEmployees.contains(emp)) {
+				this.freeEmployees.add(emp);
+			}
+		}
+	}
+
+	private void payWages() {
 		for (Employee emp : this.employees) {
 			this.money -= emp.getWage();
 		}
 	}
 
-	public double getDailyWages() {
-		double total = 0.0;
-		for (Employee emp : this.employees) {
-			total += emp.getWage();
+	public void nextDay() {
+		DayReport dReport = new DayReport(this);
+
+		for (int h = this.openingHour; h < this.closingHour; h++) {
+			nextHour(dReport, h);
 		}
-		return total * this.closingHour - this.openingHour;
+
+		this.clearStore();
+		TextInterface.printLine(dReport.toString());
+	}
+
+	private void nextHour(DayReport dReport, int hour) {
+		HourReport hReport = new HourReport(hour);
+
+		for (int m = 1; m <= 60; m++) {
+			nextMinute(hReport, hour);
+		}
+
+		dReport.update(hReport);
+		hReport.calculateAverages();
+		TextInterface.printLine(hReport.toString());
+		this.payWages();
+		TextInterface.readLine("[Press enter for next hour]");
+	}
+
+	private void nextMinute(HourReport hReport, int hour) {
+		// Create customer according to probability 
+		if (this.newCustomer()) {
+			Customer customer = new Customer();
+			this.customerLine.add(customer);
+			hReport.customerVisited();
+		}
+
+		// If employee is free and customers are in line: create order
+		if (this.freeEmployees.size() > 0 && this.customerLine.size() > 0) {
+			Employee emp = this.freeEmployees.get(0);
+			this.freeEmployees.remove(emp);
+
+			Customer cus = this.customerLine.get(0);
+			this.customerLine.remove(cus);
+			this.waitingCustomers.add(cus);
+
+			// Where should meals be created? 
+			Meal meal = new Meal("Happy meal", 7.5, 5);
+			this.orders.add(new Order(cus, emp, meal));
+			this.money += meal.getPrice();
+			hReport.addMoney(meal.getPrice());
+		}
+
+		// Every minute all customers wait one minute
+		this.allCustomersWait();
+
+		// Go trough orders. 
+		// The new list is for the orders that are ready and need to be removed
+		ArrayList<Order> readyOrders = new ArrayList();
+		for (Order order : this.orders) {
+			order.work();
+			if (order.getWorkRemaining() <= 0) {
+				readyOrders.add(order);
+				this.freeEmployees.add(order.getEmployee());
+
+				Customer customer = order.getCustomer();
+				this.waitingCustomers.remove(customer);
+
+				// get info for hour report 
+				hReport.addWaitingMinutes(customer.getMinutesWaiting());
+				hReport.addInLineMinutes(customer.getMinutesInLine());
+			}
+		}
+
+		// Go through orders that are ready
+		// Calculate reputation change and remove orders that are ready
+		for (Order order : readyOrders) {
+			int repChange = order.getCustomer().getSatisfaction();
+			this.reputation += repChange;
+			hReport.addReputationChange(repChange);
+			this.orders.remove(order);
+		}
+	}
+
+	private boolean newCustomer() {
+		// Do the probability magic here
+		return Math.random() < 0.3;
+
 	}
 }

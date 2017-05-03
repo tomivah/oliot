@@ -54,18 +54,27 @@ public class DayReport {
 	@Override
 	public String toString() {
 		double moneyLost = this.store.getDailyWages();
+		double moneyChange = this.moneyMade - moneyLost;
+
 		// Plus sign for reputation change
-		String sign = ""; 
+		String repSign = "";
 		if (this.reputationChange > 0) {
-			sign = "+";
+			repSign = "+";
 		}
+
+		// Plus sign for money change
+		String moneySign = "";
+		if (moneyChange > 0) {
+			moneySign = "+";
+		}
+
 		return "\n---- Day Report ---- " + "\n"
 				+ "Customers visited: " + this.customersVisited + "\n"
 				+ "Money made: " + this.moneyMade + "\n"
-				+ "Money lost: " + moneyLost +"\n"
-				+ "Money total: " + (this.moneyMade - moneyLost) + "\n"
+				+ "Money lost: " + moneyLost + "\n"
+				+ "Money total: " + moneySign + moneyChange + "\n"
 				+ "Minutes waited: " + this.waitingMinutes + "\n"
-				+ "Reputation change: " + sign + this.reputationChange + "\n";
+				+ "Reputation change: " + repSign + this.reputationChange + "\n";
 
 	}
 }
