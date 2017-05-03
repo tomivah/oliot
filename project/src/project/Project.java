@@ -6,7 +6,7 @@ public class Project {
 
 	public static void main(String[] args) {
 		Menu menu = new Menu();
-		Store store = new Store(100, 10000, 7, 19);
+		Store store = new Store(100, 10000, 7, 19, 5);
 		nextDay(store);
 
 		while (true) {
@@ -28,7 +28,7 @@ public class Project {
 	}
 
 	public static void nextDay(Store store) {
-		DayReport dReport = new DayReport();
+		DayReport dReport = new DayReport(store);
 		int openingHour = store.getOpeningHour();
 		int closingHour = store.getClosingHour();
 
@@ -111,7 +111,7 @@ public class Project {
 
 	public static boolean newCustomer() {
 		// Do the probability magic here
-		return Math.random() < 0.1;
+		return Math.random() < 0.9;
 
 	}
 }

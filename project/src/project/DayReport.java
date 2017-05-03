@@ -6,12 +6,10 @@ public class DayReport {
 	private int customersVisited;
 	private int waitingMinutes;
 	private int reputationChange;
+	private Store store;
 
-	public DayReport() {
-		this.moneyMade = 0;
-		this.customersVisited = 0;
-		this.waitingMinutes = 0;
-		this.reputationChange = 0;
+	public DayReport(Store store) {
+		this.store = store;
 	}
 
 	public double getMoneyMade() {
@@ -55,13 +53,17 @@ public class DayReport {
 
 	@Override
 	public String toString() {
-		String sign = ""; // positive sign
+		double moneyLost = this.store.getDailyWages();
+		// Plus sign for reputation change
+		String sign = ""; 
 		if (this.reputationChange > 0) {
 			sign = "+";
 		}
 		return "\n---- Day Report ---- " + "\n"
 				+ "Customers visited: " + this.customersVisited + "\n"
 				+ "Money made: " + this.moneyMade + "\n"
+				+ "Money lost: " + moneyLost +"\n"
+				+ "Money total: " + (this.moneyMade - moneyLost) + "\n"
 				+ "Minutes waited: " + this.waitingMinutes + "\n"
 				+ "Reputation change: " + sign + this.reputationChange + "\n";
 

@@ -6,6 +6,7 @@ public class Store {
 
 	private double reputation;
 	private double money;
+	private int startingEmployeeAmount;
 	private int openingHour;
 	private int closingHour;
 	private ArrayList<Employee> employees = new ArrayList();
@@ -14,33 +15,21 @@ public class Store {
 	private ArrayList<Employee> freeEmployees = new ArrayList();
 	private ArrayList<Customer> waitingCustomers = new ArrayList();
 
-	public Store(double reputation, double money, int openHour,  int closeHour) {
-		this.openingHour = openHour;
-		this.closingHour = closeHour;
+	public Store(double reputation, double money, int openHour, int closeHour,
+			int startingEmployees) {
+
 		this.reputation = reputation;
 		this.money = money;
+		this.openingHour = openHour;
+		this.closingHour = closeHour;
+		this.startingEmployeeAmount = startingEmployees;
+
 		// Create a couple of employees right away?
-		createStartingEmployees();
-	}
-
-	private void createStartingEmployees() {
-		Employee emp1 = new Employee();
-		Employee emp2 = new Employee();
-		Employee emp3 = new Employee();
-		Employee emp4 = new Employee();
-		Employee emp5 = new Employee();
-
-		this.employees.add(emp1);
-		this.employees.add(emp2);
-		this.employees.add(emp3);
-		this.employees.add(emp4);
-		this.employees.add(emp5);
-
-		this.freeEmployees.add(emp1);
-		this.freeEmployees.add(emp2);
-		this.freeEmployees.add(emp3);
-		this.freeEmployees.add(emp4);
-		this.freeEmployees.add(emp5);
+		for (int i = this.startingEmployeeAmount; i >= 1; i--) {
+			Employee emp = new Employee();
+			this.employees.add(emp);
+			this.freeEmployees.add(emp);
+		}
 	}
 
 	public void addToReputation(double amount) {
@@ -50,7 +39,6 @@ public class Store {
 	public void addMoney(double amount) {
 		this.money += amount;
 	}
-
 
 	public void addEmployee(Employee emp) {
 		this.employees.add(emp);
@@ -154,9 +142,9 @@ public class Store {
 	@Override
 	public String toString() {
 		return "\n---- Store ---- \n"
-				+ "Reputation: " + this.reputation +"\n"
-				+ "Money: " + this.money +"\n"
-				+ "Employees: " + this.employees.size() +"\n"
+				+ "Reputation: " + this.reputation + "\n"
+				+ "Money: " + this.money + "\n"
+				+ "Employees: " + this.employees.size() + "\n"
 				+ "Daily Wages: " + this.getDailyWages() + "\n";
 	}
 
