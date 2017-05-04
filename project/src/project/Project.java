@@ -1,13 +1,26 @@
 package project;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Project {
+ 
+    static final int FAILED_ORDER_REP = -5;
+    static ArrayList< Ingredient > ingredients = new ArrayList<>();
+    static ArrayList< Meal > meals = new ArrayList<>();
+	
+    public static void main(String[] args) {
+        
+        FileIO.readConfig("config.txt", ingredients, meals);
 
-	public static void main(String[] args) {
 		Menu menu = new Menu();
 		// Store gets a couple of employees in the constructor
 		Store store = new Store(100, 10000);
+
+        // Need a better way to add initial ingredients
+        store.getStorage().addIngredient(ingredients.get(0), 200);
+        store.getStorage().addIngredient(ingredients.get(1), 200);
+
 		// NextDay() could be store's own method?
 		nextDay(store);
 
@@ -60,16 +73,21 @@ public class Project {
 		// If employee is free and customers are in line: create order
 		if (store.employeeAvailable() && store.customersInLine()) {
 			Employee emp = store.getFreeEmployee();
-			store.setEmployeeNotFree(emp);
-
 			Customer cus = store.getFirstCustomer();
 			store.removeCustomerFromLine(cus);
-			store.putCustomerToWaitingList(cus);
 
-			// Where should meals be created? 
-			Meal meal = new Meal("Happy meal", 7.5, 5);
-			store.addOrder(new Order(cus, emp, meal));
-			hReport.addMoney(meal.getPrice());
+            Random random = new Random();
+            Meal meal = meals.get(random.nextInt(meals.size()));
+			
+            if (store.addOrder(new Order(cus, emp, meal))) {
+                store.setEmployeeNotFree(emp);
+                store.putCustomerToWaitingList(cus);
+                hReport.addMoney(meal.getPrice());
+            } else {
+                store.addToReputation(FAILED_ORDER_REP);
+                hReport.addReputationChange(FAILED_ORDER_REP);
+                hReport.addFailedOrder();
+            }
 		}
 
 		// Every minute all customers wait one minute

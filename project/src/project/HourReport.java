@@ -9,6 +9,7 @@ public class HourReport {
 	private double averageWaiting;
 	private double averageInLine;
 	private int reputationChange;
+    private int failedOrders;
 
 	public HourReport() {
 	}
@@ -32,6 +33,10 @@ public class HourReport {
 	public int getReputationChange() {
 		return this.reputationChange;
 	}
+
+    public int getFailedOrders() {
+        return this.failedOrders;
+    }
 
 	public void addMoney(double amount) {
 		this.moneyMade += amount;
@@ -58,10 +63,18 @@ public class HourReport {
 		this.reputationChange += amount;
 	}
 
+    public void addFailedOrders(int amount) {
+        this.failedOrders += amount;
+    }
+    public void addFailedOrder() {
+        this.failedOrders++;
+    }
+
 	@Override
 	public String toString() {
 		return "----- Hour Report -----" + "\n"
 				+ "Customers visited: " + this.customersVisited + "\n"
+                + "Failed orders: " + this.failedOrders + "\n"
 				+ "Money made: " + this.moneyMade + "\n"
 				+ "Average minutes waited: " + this.averageWaiting + "\n"
 				+ "Average minutes in line: " + this.averageInLine + "\n";

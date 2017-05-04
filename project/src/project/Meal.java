@@ -7,7 +7,7 @@ public class Meal {
 	private String name;
 	private double price;
 	private int workAmount;
-    private HashMap<Ingredient, Integer> ingredients;
+    private HashMap<Ingredient, Integer> ingredients = new HashMap<>();
 
 	public Meal(String name, double price, int workAmount) {
 		this.name = name;

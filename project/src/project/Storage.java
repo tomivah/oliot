@@ -43,10 +43,14 @@ public class Storage {
         return true;
     }
 
-    public void removeIngredients(HashMap<Ingredient, Integer> ingredients) {
+    public boolean removeIngredients(HashMap<Ingredient, Integer> ingredients) {
         for (Map.Entry<Ingredient, Integer> i : ingredients.entrySet()) {
-            removeIngredient(i.getKey(), i.getValue());
+            if (!removeIngredient(i.getKey(), i.getValue())) {
+                return false;
+            }
         }
+
+        return true;
     }
 
     public int getIntegerCount(Ingredient ingredient) {

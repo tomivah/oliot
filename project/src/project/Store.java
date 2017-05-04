@@ -11,6 +11,7 @@ public class Store {
 	private ArrayList<Order> orders;
 	private ArrayList<Employee> freeEmployees;
 	private ArrayList<Customer> waitingCustomers;
+    private Storage storage = new Storage();
 
 	public Store(double reputation, double money) {
 		this.reputation = reputation;
@@ -90,8 +91,13 @@ public class Store {
 		this.waitingCustomers.add(customer);
 	}
 
-	public void addOrder(Order order) {
-		this.orders.add(order);
+	public boolean addOrder(Order order) {
+        if (this.storage.removeIngredients(order.getMeal().getIngredients())) {
+            this.orders.add(order);
+            return true;
+        }
+
+        return false;
 	}
 
 	public Iterable<Order> getOrders() {
@@ -128,6 +134,14 @@ public class Store {
 			customer.addWaitingMinute();
 		}
 	}
+
+    public Storage getStorage() {
+        return this.storage;
+    }
+
+    public void setStorage(Storage storage) {
+        this.storage = storage;
+    }
 
 	public void clearStore() {
 		// Throw out all customers, all orders and free all employees
