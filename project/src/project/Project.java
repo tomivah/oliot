@@ -29,6 +29,9 @@ public class Project {
 				case 3:
 					TextInterface.printLine(store.toString());
 					break;
+				case 4:
+					TextInterface.printLine(store.getStorage().toString());
+					break;
 				default:
 					TextInterface.printLine("Invalid selection");
 			}
