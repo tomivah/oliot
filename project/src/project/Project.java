@@ -5,7 +5,7 @@ public class Project {
     public static void main(String[] args) {
         
 		Menu menu = new Menu();
-		Store store = new Store(100, 10000, 7, 19, 5);
+		Store store = new Store(1000, 10000, 7, 19, 5);
 		store.nextDay();
 
 		while (true) {
@@ -20,7 +20,10 @@ public class Project {
 				case 3:
 					TextInterface.printLine(store.toString());
 					break;
-                case 5:
+                case 4:
+					TextInterface.printLine(store.getStorage().toString());
+					break;
+				case 5:
                     TextInterface.printLine("");
                     menu.buyIngredients(store);
 
@@ -38,7 +41,7 @@ public class Project {
                     store.buyIngredient(ingredientSelection - 1, amount);
                     TextInterface.printLine("");
                     break;
-				default:
+                default:
 					TextInterface.printLine("Invalid selection");
 			}
 		}

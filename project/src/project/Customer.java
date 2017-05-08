@@ -12,7 +12,7 @@ public class Customer {
 	private static Random random = new Random();
 
 	public Customer() {
-		this.patience = random.nextInt(11) + 5;
+		this.patience = random.nextInt(11);
 		this.minutesInLine = 0;
 		this.minutesWaiting = 0;
 		// Read names and shouts from files or something?
@@ -57,7 +57,7 @@ public class Customer {
 	}
 
 	public int getSatisfaction() {
-		return this.patience - this.minutesInLine;
+		double averageWait = (this.minutesInLine + this.minutesWaiting) * 0.5;
+		return (int) (this.patience - averageWait); 
 	}
-
 }

@@ -27,6 +27,7 @@ public class Menu {
         TextInterface.printLine( "1) Exit" );
 		TextInterface.printLine( "2) Next day" );
 		TextInterface.printLine( "3) Show Store" );
+		TextInterface.printLine( "4) Show Storage");
         TextInterface.printLine( "5) Buy ingredients" );
     }
 

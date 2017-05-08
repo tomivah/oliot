@@ -217,8 +217,10 @@ public class Store {
 	}
 
 	private boolean newCustomer() {
-		// Do the probability magic here
-		return Math.random() < 0.3;
+		// Probability for new customer each minute 
+		// 0.6 is just a good constant
+		double probValue = (this.reputation / 1000) * 0.6;
+		return Math.random() < probValue;
 
 	}
 }
