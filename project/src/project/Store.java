@@ -1,6 +1,7 @@
 package project;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Store {
 
@@ -14,6 +15,11 @@ public class Store {
 	private ArrayList<Order> orders = new ArrayList();
 	private ArrayList<Employee> freeEmployees = new ArrayList();
 	private ArrayList<Customer> waitingCustomers = new ArrayList();
+    private ArrayList<Ingredient> ingredients = new ArrayList();
+    private ArrayList<Meal> meals = new ArrayList();
+    private Storage storage = new Storage();
+
+    private static final int FAILED_ORDER_REP = -5;
 
 	public Store(double reputation, double money, int openHour, int closeHour,
 			int startingEmployees) {
@@ -30,6 +36,12 @@ public class Store {
 			this.employees.add(emp);
 			this.freeEmployees.add(emp);
 		}
+
+        FileIO.readConfig("config.txt", ingredients, meals);
+
+        // Need a better way to add initial ingredients
+        storage.addIngredient(ingredients.get(0), 200);
+        storage.addIngredient(ingredients.get(1), 200);
 	}
 
 	public void addEmployee(Employee emp) {
@@ -51,6 +63,10 @@ public class Store {
 	public int getClosingHour() {
 		return closingHour;
 	}
+
+    public Storage getStorage() {
+        return storage;
+    }
 
 	public double getDailyWages() {
 		double total = 0.0;
@@ -97,6 +113,15 @@ public class Store {
 		}
 	}
 
+    public boolean addOrder(Order order) {
+        if (this.storage.removeIngredients(order.getMeal().getIngredients())) {
+            this.orders.add(order);
+            return true;
+        }
+
+        return false;
+ 	}
+
 	public void nextDay() {
 		DayReport dReport = new DayReport(this);
 
@@ -133,17 +158,22 @@ public class Store {
 		// If employee is free and customers are in line: create order
 		if (this.freeEmployees.size() > 0 && this.customerLine.size() > 0) {
 			Employee emp = this.freeEmployees.get(0);
-			this.freeEmployees.remove(emp);
-
 			Customer cus = this.customerLine.get(0);
 			this.customerLine.remove(cus);
-			this.waitingCustomers.add(cus);
 
-			// Where should meals be created? 
-			Meal meal = new Meal("Happy meal", 7.5, 5);
-			this.orders.add(new Order(cus, emp, meal));
-			this.money += meal.getPrice();
-			hReport.addMoney(meal.getPrice());
+            Random random = new Random();
+            Meal meal = meals.get(random.nextInt(meals.size()));
+
+            if (addOrder(new Order(cus, emp, meal))) {
+                this.freeEmployees.remove(emp);
+                this.waitingCustomers.add(cus);
+                this.money += meal.getPrice();
+                hReport.addMoney(meal.getPrice());
+            } else {
+                this.reputation += FAILED_ORDER_REP;
+                hReport.addReputationChange(FAILED_ORDER_REP);
+                hReport.addFailedOrder();
+            }
 		}
 
 		// Every minute all customers wait one minute

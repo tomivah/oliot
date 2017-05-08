@@ -6,6 +6,7 @@ public class DayReport {
 	private int customersVisited;
 	private int waitingMinutes;
 	private int reputationChange;
+    private int failedOrders;
 	private Store store;
 
 	public DayReport(Store store) {
@@ -28,6 +29,10 @@ public class DayReport {
 		return this.reputationChange;
 	}
 
+    public int getFailedOrders() {
+        return this.failedOrders;
+    }
+
 	public void addMoney(double amount) {
 		this.moneyMade += amount;
 	}
@@ -44,11 +49,17 @@ public class DayReport {
 		this.reputationChange += amount;
 	}
 
+    public void addFailedOrders(int amount) {
+        this.failedOrders += amount;
+    }
+
 	public void update(HourReport hourReport) {
 		// Get stuff from hour report and add to day report
 		this.moneyMade += hourReport.getMoneyMade();
 		this.customersVisited += hourReport.getCustomersVisited();
 		this.reputationChange += hourReport.getReputationChange();
+        this.failedOrders += hourReport.getFailedOrders();
+        this.waitingMinutes += hourReport.getWaitingMinutes();
 	}
 
 	@Override
@@ -70,6 +81,7 @@ public class DayReport {
 
 		return "\n---- Day Report ---- " + "\n"
 				+ "Customers visited: " + this.customersVisited + "\n"
+                + "Failed orders: " + this.failedOrders + "\n"
 				+ "Money made: " + this.moneyMade + "\n"
 				+ "Money lost: " + moneyLost + "\n"
 				+ "Money total: " + moneySign + moneyChange + "\n"
