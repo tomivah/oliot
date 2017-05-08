@@ -10,7 +10,7 @@ public class HourReport {
 	private double averageInLine;
 	private int reputationChange;
 	private int hour;
-    private int failedOrders;
+	private int failedOrders;
 
 	public HourReport(int hour) {
 		this.hour = hour;
@@ -36,9 +36,9 @@ public class HourReport {
 		return this.reputationChange;
 	}
 
-    public int getFailedOrders() {
-        return this.failedOrders;
-    }
+	public int getFailedOrders() {
+		return this.failedOrders;
+	}
 
 	public void addMoney(double amount) {
 		this.moneyMade += amount;
@@ -57,26 +57,32 @@ public class HourReport {
 	}
 
 	public void calculateAverages() {
-		this.averageInLine = this.totalInLine / this.customersVisited;
-		this.averageWaiting = this.totalWaiting / this.customersVisited;
+		if (this.customersVisited == 0) {
+			this.averageInLine = 0;
+			this.averageWaiting = 0;
+		} else {
+			this.averageInLine = this.totalInLine / this.customersVisited;
+			this.averageWaiting = this.totalWaiting / this.customersVisited;
+		}
 	}
 
 	public void addReputationChange(int amount) {
 		this.reputationChange += amount;
 	}
 
-    public void addFailedOrders(int amount) {
-        this.failedOrders += amount;
-    }
-    public void addFailedOrder() {
-        this.failedOrders++;
-    }
+	public void addFailedOrders(int amount) {
+		this.failedOrders += amount;
+	}
+
+	public void addFailedOrder() {
+		this.failedOrders++;
+	}
 
 	@Override
 	public String toString() {
 		return "\n----- Hour Report [" + this.hour + "] -----" + "\n"
 				+ "Customers visited: " + this.customersVisited + "\n"
-                + "Failed orders: " + this.failedOrders + "\n"
+				+ "Failed orders: " + this.failedOrders + "\n"
 				+ "Money made: " + this.moneyMade + "\n"
 				+ "Average minutes waited: " + this.averageWaiting + "\n"
 				+ "Average minutes in line: " + this.averageInLine + "\n";

@@ -20,6 +20,7 @@ public class Store {
     private Storage storage = new Storage();
 
     private static final int FAILED_ORDER_REP = -5;
+	private final int REP_MAX = 5000;
 
 	public Store(double reputation, double money, int openHour, int closeHour,
 			int startingEmployees) {
@@ -67,6 +68,11 @@ public class Store {
     public Storage getStorage() {
         return storage;
     }
+
+	private void addToReputation(int amount) {
+		this.reputation += amount;
+		if (this.reputation > REP_MAX) this.reputation = REP_MAX;
+	}
 
     public ArrayList<Ingredient> getIngredients() {
         return ingredients;
@@ -179,7 +185,7 @@ public class Store {
                 this.money += meal.getPrice();
                 hReport.addMoney(meal.getPrice());
             } else {
-                this.reputation += FAILED_ORDER_REP;
+				this.addToReputation(FAILED_ORDER_REP);
                 hReport.addReputationChange(FAILED_ORDER_REP);
                 hReport.addFailedOrder();
             }
@@ -210,7 +216,7 @@ public class Store {
 		// Calculate reputation change and remove orders that are ready
 		for (Order order : readyOrders) {
 			int repChange = order.getCustomer().getSatisfaction();
-			this.reputation += repChange;
+			this.addToReputation(repChange);
 			hReport.addReputationChange(repChange);
 			this.orders.remove(order);
 		}
@@ -218,9 +224,8 @@ public class Store {
 
 	private boolean newCustomer() {
 		// Probability for new customer each minute 
-		// 0.6 is just a good constant
-		double probValue = (this.reputation / 1000) * 0.6;
-		return Math.random() < probValue;
+		return Math.random() < (this.reputation / REP_MAX);
+
 
 	}
 }

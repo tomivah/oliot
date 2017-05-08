@@ -5,7 +5,7 @@ public class Project {
     public static void main(String[] args) {
         
 		Menu menu = new Menu();
-		Store store = new Store(1000, 10000, 7, 19, 5);
+		Store store = new Store(1000, 10000, 7, 19, 3);
 		store.nextDay();
 
 		while (true) {
