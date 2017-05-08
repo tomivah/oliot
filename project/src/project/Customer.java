@@ -11,6 +11,8 @@ public class Customer {
 	private int minutesWaiting;
 	private static Random random = new Random();
 
+    public static int MAX_MINUTES_IN_LINE = 30;
+
 	public Customer() {
 		this.patience = random.nextInt(11);
 		this.minutesInLine = 0;

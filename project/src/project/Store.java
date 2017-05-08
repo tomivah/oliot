@@ -18,9 +18,12 @@ public class Store {
     private ArrayList<Ingredient> ingredients = new ArrayList();
     private ArrayList<Meal> meals = new ArrayList();
     private Storage storage = new Storage();
+    private DayReport dReport = new DayReport(this);
+    private HourReport hReport = new HourReport(openingHour);
 
     private static final int FAILED_ORDER_REP = -50;
-	private final int REP_MAX = 5000;
+	private static final int REP_MAX = 5000;
+    private static final int LEAVING_REP = -50;
 
 	public Store(double reputation, double money, int openHour, int closeHour,
 			int startingEmployees) {
@@ -99,9 +102,22 @@ public class Store {
 	}
 
 	private void allCustomersWait() {
-		for (Customer customer : this.customerLine) {
+        ArrayList<Customer> leavingCustomers = new ArrayList();
+
+        for (Customer customer : this.customerLine) {
 			customer.addLineMinute();
+            
+            if (customer.getMinutesInLine() > customer.MAX_MINUTES_IN_LINE ) {
+                this.addToReputation(LEAVING_REP);
+                this.hReport.addReputationChange(LEAVING_REP);
+                this.hReport.addInLineMinutes(customer.getMinutesInLine());
+                leavingCustomers.add(customer);
+            }
 		}
+
+        for (Customer customer : leavingCustomers) {
+            this.customerLine.remove(customer);
+        }
 
 		for (Customer customer : this.waitingCustomers) {
 			customer.addWaitingMinute();
@@ -146,7 +162,7 @@ public class Store {
     }
 
 	public void nextDay() {
-		DayReport dReport = new DayReport(this);
+		dReport = new DayReport(this);
 
 		for (int h = this.openingHour; h < this.closingHour; h++) {
 			nextHour(dReport, h);
@@ -157,7 +173,7 @@ public class Store {
 	}
 
 	private void nextHour(DayReport dReport, int hour) {
-		HourReport hReport = new HourReport(hour);
+		hReport = new HourReport(hour);
 
 		for (int m = 1; m <= 60; m++) {
 			nextMinute(hReport, hour);
@@ -240,7 +256,8 @@ public class Store {
 	}
 
 	public void fireEmployee() {
-		if (this.employees.size() > 0 ) {
+        if (this.employees.size() > 0 ) {
+            this.freeEmployees.remove(this.employees.get(0));
 			this.employees.remove(0);
 		}
 	}
