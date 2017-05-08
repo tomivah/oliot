@@ -39,9 +39,9 @@ public class Store {
 
         FileIO.readConfig("config.txt", ingredients, meals);
 
-        // Need a better way to add initial ingredients
-        storage.addIngredient(ingredients.get(0), 200);
-        storage.addIngredient(ingredients.get(1), 200);
+        for (Ingredient ingredient : ingredients) {
+            storage.addIngredient(ingredient, 800);
+        }
 	}
 
 	public void addEmployee(Employee emp) {
