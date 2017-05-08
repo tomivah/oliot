@@ -1,9 +1,9 @@
 package project;
 
 public class Project {
- 
-    public static void main(String[] args) {
-        
+
+	public static void main(String[] args) {
+
 		Menu menu = new Menu();
 		Store store = new Store(1000, 10000, 7, 19, 3);
 		store.nextDay();
@@ -20,39 +20,46 @@ public class Project {
 				case 3:
 					TextInterface.printLine(store.toString());
 					break;
-                case 4:
+				case 4:
 					TextInterface.printLine(store.getStorage().toString());
 					break;
 				case 5:
-                    TextInterface.printLine("");
-                    menu.buyIngredients(store);
+					TextInterface.printLine("");
+					menu.buyIngredients(store);
 
-                    int ingredientSelection = menu.readSelection();
-                    
-                    while ( ingredientSelection < 1 ||
-                            ingredientSelection >
-                            store.getIngredients().size() ) {
-                        TextInterface.printLine(
-                                "Invalid selection. Try again.");
-                        ingredientSelection = menu.readSelection();
-                    }
+					int ingredientSelection = menu.readSelection();
 
-                    int amount = TextInterface.readInt("How many? ");
-                    
-                    if (!store.buyIngredient(ingredientSelection - 1, amount)) {
-                        TextInterface.printLine("Insufficient funds.");
-                    }
+					while (ingredientSelection < 1
+							|| ingredientSelection
+							> store.getIngredients().size()) {
+						TextInterface.printLine(
+								"Invalid selection. Try again.");
+						ingredientSelection = menu.readSelection();
+					}
 
-                    TextInterface.printLine("");
-                    break;
+					int amount = TextInterface.readInt("How many? ");
+
+					if (!store.buyIngredient(ingredientSelection - 1, amount)) {
+						TextInterface.printLine("Insufficient funds.");
+					}
+
+					TextInterface.printLine("");
+					break;
 				case 6:
 					store.hireEmployee();
 					break;
 				case 7:
 					store.fireEmployee();
 					break;
-                default:
+				default:
 					TextInterface.printLine("Invalid selection");
+			}
+			if (store.outOfMoney()) {
+				TextInterface.printLine("You ran out of money! Game over!");
+				break;
+			} else if (store.outOfRep()) {
+				TextInterface.printLine("You ran out of reputation! Game over!");
+				break;
 			}
 		}
 	}

@@ -261,4 +261,12 @@ public class Store {
 			this.employees.remove(0);
 		}
 	}
+
+	public boolean outOfMoney() {
+		return this.money <= 0;
+	}
+
+	public boolean outOfRep() {
+		return this.reputation <= 0;
+	}
 }
