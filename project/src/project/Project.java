@@ -38,7 +38,11 @@ public class Project {
                     }
 
                     int amount = TextInterface.readInt("How many? ");
-                    store.buyIngredient(ingredientSelection - 1, amount);
+                    
+                    if (!store.buyIngredient(ingredientSelection - 1, amount)) {
+                        TextInterface.printLine("Insufficient funds.");
+                    }
+
                     TextInterface.printLine("");
                     break;
                 default:

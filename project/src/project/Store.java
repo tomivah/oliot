@@ -135,9 +135,14 @@ public class Store {
         return false;
  	}
 
-    public void buyIngredient(int index, int amount) {
-        this.storage.addIngredient(ingredients.get(index), amount);
-        this.money -= ingredients.get(index).getCost() * amount;
+    public boolean buyIngredient(int index, int amount) {
+        if (this.money >= ingredients.get(index).getCost() * amount) {
+            this.storage.addIngredient(ingredients.get(index), amount);
+            this.money -= ingredients.get(index).getCost() * amount;
+            return true;
+        }
+        
+        return false;
     }
 
 	public void nextDay() {
