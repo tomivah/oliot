@@ -68,6 +68,10 @@ public class Store {
         return storage;
     }
 
+    public ArrayList<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
 	public double getDailyWages() {
 		double total = 0.0;
 		for (Employee emp : this.employees) {
@@ -121,6 +125,11 @@ public class Store {
 
         return false;
  	}
+
+    public void buyIngredient(int index, int amount) {
+        this.storage.addIngredient(ingredients.get(index), amount);
+        this.money -= ingredients.get(index).getCost() * amount;
+    }
 
 	public void nextDay() {
 		DayReport dReport = new DayReport(this);

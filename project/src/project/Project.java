@@ -1,18 +1,9 @@
 package project;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 public class Project {
  
-    static final int FAILED_ORDER_REP = -5;
-    static ArrayList< Ingredient > ingredients = new ArrayList<>();
-    static ArrayList< Meal > meals = new ArrayList<>();
-	
     public static void main(String[] args) {
         
-        FileIO.readConfig("config.txt", ingredients, meals);
-
 		Menu menu = new Menu();
 		Store store = new Store(100, 10000, 7, 19, 5);
 		store.nextDay();
@@ -29,6 +20,24 @@ public class Project {
 				case 3:
 					TextInterface.printLine(store.toString());
 					break;
+                case 5:
+                    TextInterface.printLine("");
+                    menu.buyIngredients(store);
+
+                    int ingredientSelection = menu.readSelection();
+                    
+                    while ( ingredientSelection < 1 ||
+                            ingredientSelection >
+                            store.getIngredients().size() ) {
+                        TextInterface.printLine(
+                                "Invalid selection. Try again.");
+                        ingredientSelection = menu.readSelection();
+                    }
+
+                    int amount = TextInterface.readInt("How many? ");
+                    store.buyIngredient(ingredientSelection - 1, amount);
+                    TextInterface.printLine("");
+                    break;
 				default:
 					TextInterface.printLine("Invalid selection");
 			}
