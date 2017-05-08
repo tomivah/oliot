@@ -1,8 +1,18 @@
 package project;
 
-public class Project {
+import java.util.ArrayList;
+import java.util.Random;
 
-	public static void main(String[] args) {
+public class Project {
+ 
+    static final int FAILED_ORDER_REP = -5;
+    static ArrayList< Ingredient > ingredients = new ArrayList<>();
+    static ArrayList< Meal > meals = new ArrayList<>();
+	
+    public static void main(String[] args) {
+        
+        FileIO.readConfig("config.txt", ingredients, meals);
+
 		Menu menu = new Menu();
 		Store store = new Store(1000, 10000, 7, 19, 5);
 		store.nextDay();

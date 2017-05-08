@@ -1,0 +1,7 @@
+-syntax: ingredient name cost
+ingredient beef 1
+ingredient pickle 0.5
+
+-syntax: meal name price workamount ingredientname ingredientcount ...
+meal Happy_Meal 7.5 5 beef 1 pickle 2
+meal Unhappy_Meal 4.0 4 pickle 1
