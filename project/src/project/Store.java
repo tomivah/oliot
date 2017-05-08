@@ -87,7 +87,7 @@ public class Store {
 		for (Employee emp : this.employees) {
 			total += emp.getWage();
 		}
-		return total * this.closingHour - this.openingHour;
+		return total * (this.closingHour - this.openingHour);
 	}
 
 	@Override

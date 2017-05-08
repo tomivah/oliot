@@ -23,6 +23,6 @@ public class Employee {
 	}
 
 	public double getWage() {
-		return wage;
+		return this.wage;
 	}
 }
