@@ -45,6 +45,12 @@ public class Project {
 
                     TextInterface.printLine("");
                     break;
+				case 6:
+					store.hireEmployee();
+					break;
+				case 7:
+					store.fireEmployee();
+					break;
                 default:
 					TextInterface.printLine("Invalid selection");
 			}

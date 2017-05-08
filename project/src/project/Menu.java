@@ -29,6 +29,8 @@ public class Menu {
 		TextInterface.printLine( "3) Show Store" );
 		TextInterface.printLine( "4) Show Storage");
         TextInterface.printLine( "5) Buy ingredients" );
+        TextInterface.printLine( "6) Hire new employee" );
+        TextInterface.printLine( "7) Fire employee" );
     }
 
     private void showGraphical() {

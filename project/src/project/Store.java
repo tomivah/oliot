@@ -233,7 +233,15 @@ public class Store {
 	private boolean newCustomer() {
 		// Probability for new customer each minute 
 		return Math.random() < (this.reputation / REP_MAX);
+	}
 
+	public void hireEmployee() {
+		this.employees.add(new Employee());
+	}
 
+	public void fireEmployee() {
+		if (this.employees.size() > 0 ) {
+			this.employees.remove(0);
+		}
 	}
 }
