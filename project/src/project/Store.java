@@ -19,7 +19,7 @@ public class Store {
     private ArrayList<Meal> meals = new ArrayList();
     private Storage storage = new Storage();
 
-    private static final int FAILED_ORDER_REP = -5;
+    private static final int FAILED_ORDER_REP = -50;
 	private final int REP_MAX = 5000;
 
 	public Store(double reputation, double money, int openHour, int closeHour,
@@ -72,6 +72,7 @@ public class Store {
 	private void addToReputation(int amount) {
 		this.reputation += amount;
 		if (this.reputation > REP_MAX) this.reputation = REP_MAX;
+		if (this.reputation < 0) this.reputation = 0;
 	}
 
     public ArrayList<Ingredient> getIngredients() {
@@ -88,8 +89,10 @@ public class Store {
 
 	@Override
 	public String toString() {
+		int probability = (int) ((double)(this.reputation / REP_MAX) * 100);
 		return "\n---- Store ---- \n"
 				+ "Reputation: " + this.reputation + "\n"
+				+ "Customer Probability: " + probability + "%\n"
 				+ "Money: " + this.money + "\n"
 				+ "Employees: " + this.employees.size() + "\n"
 				+ "Daily Wages: " + this.getDailyWages() + "\n";
